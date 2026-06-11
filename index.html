@@ -7,14 +7,18 @@
     <title>Keto Coffee PT Mindmap</title>
     <style>
       :root {
-        --bg: #f6f3ed;
-        --panel: #ffffff;
-        --ink: #201d18;
-        --muted: #6f675d;
-        --line: #ded7cb;
-        --accent: #19715f;
-        --accent-2: #b34535;
-        --shadow: 0 18px 50px rgba(32, 29, 24, 0.1);
+        --bg: #f2ece0;
+        --panel: #fffdf8;
+        --ink: #171512;
+        --muted: #70675a;
+        --line: rgba(56, 45, 32, 0.15);
+        --coffee: #3a2116;
+        --cream: #fff6e6;
+        --mint: #08755f;
+        --coral: #bf5544;
+        --gold: #b9952f;
+        --blue: #2a628f;
+        --shadow: 0 24px 70px rgba(35, 28, 18, 0.14);
       }
 
       * {
@@ -24,7 +28,12 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: var(--bg);
+        background:
+          linear-gradient(135deg, rgba(8, 117, 95, 0.12), transparent 34%),
+          linear-gradient(315deg, rgba(191, 85, 68, 0.1), transparent 32%),
+          repeating-linear-gradient(0deg, rgba(58, 33, 22, 0.035) 0 1px, transparent 1px 36px),
+          repeating-linear-gradient(90deg, rgba(58, 33, 22, 0.03) 0 1px, transparent 1px 36px),
+          var(--bg);
         color: var(--ink);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -47,9 +56,9 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 20px;
         align-items: center;
-        padding: 16px 20px;
+        padding: 18px 22px;
         border-bottom: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.86);
+        background: rgba(255, 253, 248, 0.86);
         backdrop-filter: blur(18px);
         position: sticky;
         top: 0;
@@ -61,7 +70,7 @@
       }
 
       .eyebrow {
-        color: var(--accent);
+        color: var(--mint);
         font-size: 12px;
         font-weight: 800;
         letter-spacing: 0;
@@ -70,7 +79,7 @@
 
       h1 {
         margin: 2px 0 0;
-        font-size: clamp(22px, 3vw, 34px);
+        font-size: clamp(25px, 3.2vw, 42px);
         line-height: 1.05;
         letter-spacing: 0;
       }
@@ -93,7 +102,7 @@
       .text-button {
         min-height: 38px;
         border: 1px solid var(--line);
-        background: var(--panel);
+        background: rgba(255, 253, 248, 0.88);
         color: var(--ink);
         border-radius: 8px;
         display: inline-flex;
@@ -101,7 +110,7 @@
         justify-content: center;
         gap: 8px;
         cursor: pointer;
-        box-shadow: 0 8px 22px rgba(32, 29, 24, 0.06);
+        box-shadow: 0 10px 24px rgba(35, 28, 18, 0.08);
       }
 
       .text-button {
@@ -111,7 +120,8 @@
       }
 
       .text-button:hover {
-        border-color: #c9bdae;
+        border-color: rgba(8, 117, 95, 0.34);
+        background: #ffffff;
         transform: translateY(-1px);
       }
 
@@ -121,6 +131,10 @@
         grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
         gap: 16px;
         padding: 16px;
+      }
+
+      .workspace.source-hidden {
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .map-shell,
@@ -136,6 +150,10 @@
       .map-shell {
         position: relative;
         height: calc(100vh - 118px);
+        background:
+          linear-gradient(135deg, rgba(255, 246, 230, 0.82), rgba(255, 253, 248, 0.94)),
+          repeating-linear-gradient(0deg, rgba(23, 21, 18, 0.045) 0 1px, transparent 1px 40px),
+          repeating-linear-gradient(90deg, rgba(23, 21, 18, 0.035) 0 1px, transparent 1px 40px);
       }
 
       #mindmap {
@@ -157,7 +175,7 @@
         max-width: min(420px, calc(100% - 32px));
         padding: 10px 12px;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 253, 248, 0.92);
         border: 1px solid var(--line);
         color: var(--muted);
         font-size: 13px;
@@ -169,6 +187,7 @@
         height: calc(100vh - 118px);
         display: grid;
         grid-template-rows: auto 1fr;
+        background: rgba(255, 253, 248, 0.94);
       }
 
       .outline-header {
@@ -243,15 +262,15 @@
     <div class="app">
       <header class="topbar">
         <div class="title-block">
-          <div class="eyebrow">Shared mindmap</div>
+          <div class="eyebrow">Approach map</div>
           <h1 id="page-title">Keto Coffee PT</h1>
           <div class="meta" id="page-meta">Loading outline...</div>
         </div>
         <nav class="toolbar" aria-label="Mindmap actions">
-          <button class="text-button" id="fit-button" title="Fit map" type="button">Fit</button>
+          <button class="text-button" id="fit-button" title="Fit map" type="button">Center</button>
           <button class="text-button" id="reload-button" title="Reload outline" type="button">Reload</button>
           <button class="text-button" id="toggle-source" type="button">
-            <span>Outline</span>
+            <span>Source</span>
           </button>
           <a class="text-button" href="./mindmap.md">
             <span>Markdown</span>
@@ -259,13 +278,13 @@
         </nav>
       </header>
 
-      <main class="workspace">
+      <main class="workspace source-hidden">
         <section class="map-shell" aria-label="Interactive mindmap">
           <svg id="mindmap"></svg>
           <div class="status" id="status">Loading mindmap.md...</div>
         </section>
 
-        <aside class="outline" id="outline-panel" aria-label="Markdown outline">
+        <aside class="outline hidden" id="outline-panel" aria-label="Markdown outline">
           <div class="outline-header">
             <strong>Source outline</strong>
             <span>Edited in mindmap.md</span>
@@ -283,6 +302,10 @@
         scale: 1,
         panX: 0,
         panY: 0,
+        targetScale: 1,
+        targetPanX: 0,
+        targetPanY: 0,
+        transformFrame: null,
         dragging: false,
         dragStart: null,
       };
@@ -294,13 +317,14 @@
         source: document.querySelector("#outline-source"),
         svg: document.querySelector("#mindmap"),
         outline: document.querySelector("#outline-panel"),
+        workspace: document.querySelector(".workspace"),
         fit: document.querySelector("#fit-button"),
         reload: document.querySelector("#reload-button"),
         toggleSource: document.querySelector("#toggle-source"),
       };
 
-      const palette = ["#19715f", "#b34535", "#6b5e2d", "#315f89", "#8b4f73", "#3f7350"];
-      const box = { width: 220, rootWidth: 260, lineHeight: 17, paddingX: 14, paddingY: 10 };
+      const palette = ["#08755f", "#bf5544", "#b9952f", "#2a628f", "#7a4f89", "#446f55"];
+      const box = { width: 250, rootWidth: 310, lineHeight: 18, paddingX: 18, paddingY: 13 };
 
       function getTitle(markdown) {
         const match = markdown.match(/^#\s+(.+)$/m);
@@ -341,7 +365,8 @@
       }
 
       function createNode(text, level, kind = "heading") {
-        const lines = wrapText(text, level <= 1 ? 28 : 32);
+        const lines = wrapText(text, level <= 1 ? 23 : 30);
+        const minHeight = level <= 1 ? 88 : kind === "bullet" ? 42 : 66;
         return {
           id: Math.random().toString(36).slice(2),
           text,
@@ -350,10 +375,16 @@
           children: [],
           lines,
           width: level <= 1 ? box.rootWidth : box.width,
-          height: Math.max(42, lines.length * box.lineHeight + box.paddingY * 2),
+          height: Math.max(minHeight, lines.length * box.lineHeight + box.paddingY * 2),
           x: 0,
           y: 0,
         };
+      }
+
+      function addChild(parent, node) {
+        node.siblingIndex = parent.children.length + 1;
+        parent.children.push(node);
+        return node;
       }
 
       function parseMarkdown(markdown) {
@@ -377,7 +408,7 @@
             const node = createNode(text, level, "heading");
             while (stack.length && stack[stack.length - 1].level >= level) stack.pop();
             const parent = stack[stack.length - 1] || root;
-            parent.children.push(node);
+            addChild(parent, node);
             stack.push(node);
             continue;
           }
@@ -391,7 +422,7 @@
 
             while (stack.length && stack[stack.length - 1].level >= level) stack.pop();
             const parent = stack[stack.length - 1] || root;
-            parent.children.push(node);
+            addChild(parent, node);
             stack.push(node);
           }
         }
@@ -406,11 +437,11 @@
         function place(node, depth) {
           maxDepth = Math.max(maxDepth, depth);
           node.depth = depth;
-          node.x = depth * 280;
+          node.x = depth * 330;
 
           if (!node.children.length) {
             node.y = cursor + node.height / 2;
-            cursor += node.height + 18;
+            cursor += node.height + (depth <= 1 ? 28 : 18);
             return;
           }
 
@@ -424,8 +455,8 @@
 
         return {
           maxDepth,
-          height: Math.max(cursor, 360),
-          width: maxDepth * 280 + box.width + 80,
+          height: Math.max(cursor, 380),
+          width: maxDepth * 330 + box.width + 96,
         };
       }
 
@@ -441,23 +472,36 @@
 
       function nodeMarkup(node) {
         const color = palette[node.depth % palette.length];
-        const fill = node.depth === 0 ? "#201d18" : "#ffffff";
-        const stroke = node.depth === 0 ? "#201d18" : color;
-        const textFill = node.depth === 0 ? "#ffffff" : "#201d18";
         const x = node.x;
         const y = node.y - node.height / 2;
-        const radius = node.kind === "bullet" ? 6 : 8;
+        const isRoot = node.depth === 0;
+        const isApproach = node.depth === 1 && node.kind === "heading";
+        const fill = isRoot ? "url(#root-gradient)" : node.kind === "bullet" ? "#fffaf1" : "#fffefa";
+        const stroke = isRoot ? "#2d1810" : color;
+        const textFill = isRoot ? "#fff6e6" : "#171512";
+        const radius = isRoot ? 18 : node.kind === "bullet" ? 8 : 12;
+        const textX = isApproach ? x + 74 : x + box.paddingX;
+        const textY = isRoot ? y + 34 : y + box.paddingY + 14;
         const tspans = node.lines
           .map((line, index) => {
-            const dy = index === 0 ? 0 : box.lineHeight;
-            return `<tspan x="${x + box.paddingX}" dy="${dy}">${escapeHtml(line)}</tspan>`;
+            const dy = index === 0 ? 0 : isRoot ? 24 : box.lineHeight;
+            return `<tspan x="${textX}" dy="${dy}">${escapeHtml(line)}</tspan>`;
           })
           .join("");
+        const approachBadge = isApproach
+          ? `<rect x="${x + 16}" y="${y + 18}" width="42" height="26" rx="13" fill="${color}"></rect>
+             <text x="${x + 37}" y="${y + 36}" fill="#ffffff" text-anchor="middle" font-size="12" font-weight="900">${String(node.siblingIndex || 1).padStart(2, "0")}</text>`
+          : "";
+        const accentLine = !isRoot
+          ? `<rect x="${x}" y="${y}" width="6" height="${node.height}" rx="${radius}" fill="${color}"></rect>`
+          : `<path d="M ${x + 20} ${y + node.height - 18} H ${x + node.width - 20}" stroke="#f2c66d" stroke-width="3" stroke-linecap="round" opacity="0.78"></path>`;
 
         return `
           <g class="map-node" transform="translate(0, 0)">
-            <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="1.6"></rect>
-            <text x="${x + box.paddingX}" y="${y + box.paddingY + 13}" fill="${textFill}" font-size="${node.depth === 0 ? 15 : 13}" font-weight="${node.kind === "bullet" ? 600 : 800}">${tspans}</text>
+            <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="${isRoot ? 2 : 1.7}"></rect>
+            ${accentLine}
+            ${approachBadge}
+            <text x="${textX}" y="${textY}" fill="${textFill}" font-size="${isRoot ? 22 : isApproach ? 15 : 13}" font-weight="${node.kind === "bullet" ? 650 : 900}">${tspans}</text>
           </g>
         `;
       }
@@ -467,10 +511,10 @@
         const startY = parent.y;
         const endX = node.x;
         const endY = node.y;
-        const midX = startX + (endX - startX) * 0.52;
+        const midX = startX + (endX - startX) * 0.46;
         const color = palette[node.depth % palette.length];
 
-        return `<path d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" fill="none" stroke="${color}" stroke-width="1.8" opacity="0.72"></path>`;
+        return `<path d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" fill="none" stroke="${color}" stroke-width="${node.depth === 1 ? 4 : 2.2}" opacity="${node.depth === 1 ? 0.82 : 0.62}" stroke-linecap="round"></path>`;
       }
 
       function applyTransform() {
@@ -479,15 +523,63 @@
         group.setAttribute("transform", `translate(${state.panX} ${state.panY}) scale(${state.scale})`);
       }
 
-      function fitMap() {
+      function stopTransformAnimation() {
+        if (!state.transformFrame) return;
+        window.cancelAnimationFrame(state.transformFrame);
+        state.transformFrame = null;
+      }
+
+      function animateTransform() {
+        state.panX += (state.targetPanX - state.panX) * 0.16;
+        state.panY += (state.targetPanY - state.panY) * 0.16;
+        state.scale += (state.targetScale - state.scale) * 0.16;
+        applyTransform();
+
+        const settled =
+          Math.abs(state.panX - state.targetPanX) < 0.2 &&
+          Math.abs(state.panY - state.targetPanY) < 0.2 &&
+          Math.abs(state.scale - state.targetScale) < 0.001;
+
+        if (settled) {
+          state.panX = state.targetPanX;
+          state.panY = state.targetPanY;
+          state.scale = state.targetScale;
+          applyTransform();
+          state.transformFrame = null;
+          return;
+        }
+
+        state.transformFrame = window.requestAnimationFrame(animateTransform);
+      }
+
+      function setTransformTarget(panX, panY, scale, immediate = false) {
+        state.targetPanX = panX;
+        state.targetPanY = panY;
+        state.targetScale = scale;
+
+        if (immediate) {
+          stopTransformAnimation();
+          state.panX = panX;
+          state.panY = panY;
+          state.scale = scale;
+          applyTransform();
+          return;
+        }
+
+        if (!state.transformFrame) {
+          state.transformFrame = window.requestAnimationFrame(animateTransform);
+        }
+      }
+
+      function fitMap(immediate = false) {
         if (!state.layout) return;
         const bounds = nodes.svg.getBoundingClientRect();
         const scaleX = (bounds.width - 56) / state.layout.width;
         const scaleY = (bounds.height - 56) / state.layout.height;
-        state.scale = Math.max(0.32, Math.min(1.25, Math.min(scaleX, scaleY)));
-        state.panX = 28;
-        state.panY = Math.max(28, (bounds.height - state.layout.height * state.scale) / 2);
-        applyTransform();
+        const nextScale = Math.max(0.38, Math.min(1.34, Math.min(scaleX, scaleY)));
+        const nextPanX = Math.max(32, (bounds.width - state.layout.width * nextScale) / 2);
+        const nextPanY = Math.max(32, (bounds.height - state.layout.height * nextScale) / 2);
+        setTransformTarget(nextPanX, nextPanY, nextScale, immediate);
       }
 
       function renderMindmap(markdown) {
@@ -504,8 +596,13 @@
         state.layout = layout;
         nodes.svg.innerHTML = `
           <defs>
+            <linearGradient id="root-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#5a2c1c"></stop>
+              <stop offset="52%" stop-color="#2d1810"></stop>
+              <stop offset="100%" stop-color="#08755f"></stop>
+            </linearGradient>
             <filter id="node-shadow" x="-20%" y="-30%" width="140%" height="160%">
-              <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#201d18" flood-opacity="0.10"></feDropShadow>
+              <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#231c12" flood-opacity="0.16"></feDropShadow>
             </filter>
           </defs>
           <g id="map-content">
@@ -513,7 +610,7 @@
             <g class="nodes" filter="url(#node-shadow)">${nodeHtml}</g>
           </g>
         `;
-        fitMap();
+        fitMap(true);
       }
 
       async function loadMindmap() {
@@ -531,10 +628,10 @@
           const markdown = await response.text();
           state.markdown = markdown;
           nodes.title.textContent = getTitle(markdown);
-          nodes.meta.textContent = `Updated: ${getUpdated(markdown)}. Share this page with the team; edit mindmap.md to update the map.`;
+          nodes.meta.textContent = `Updated: ${getUpdated(markdown)}. Approach branches are ready for the next content pass.`;
           nodes.source.textContent = markdown;
           renderMindmap(markdown);
-          nodes.status.textContent = "Map loaded. Drag to pan, scroll to zoom, use Fit to recenter.";
+          nodes.status.textContent = "Drag to move. Scroll gently to zoom. Center brings the map back.";
         } catch (error) {
           nodes.meta.textContent = "Could not load the source outline.";
           nodes.source.textContent = String(error);
@@ -551,10 +648,12 @@
 
       nodes.toggleSource.addEventListener("click", () => {
         nodes.outline.classList.toggle("hidden");
+        nodes.workspace.classList.toggle("source-hidden");
         window.setTimeout(fitMap, 80);
       });
 
       nodes.svg.addEventListener("pointerdown", (event) => {
+        stopTransformAnimation();
         state.dragging = true;
         state.dragStart = {
           x: event.clientX,
@@ -569,6 +668,9 @@
         if (!state.dragging || !state.dragStart) return;
         state.panX = state.dragStart.panX + event.clientX - state.dragStart.x;
         state.panY = state.dragStart.panY + event.clientY - state.dragStart.y;
+        state.targetPanX = state.panX;
+        state.targetPanY = state.panY;
+        state.targetScale = state.scale;
         applyTransform();
       });
 
@@ -578,24 +680,29 @@
         nodes.svg.releasePointerCapture(event.pointerId);
       });
 
+      nodes.svg.addEventListener("pointercancel", () => {
+        state.dragging = false;
+        state.dragStart = null;
+      });
+
       nodes.svg.addEventListener(
         "wheel",
         (event) => {
           event.preventDefault();
           const bounds = nodes.svg.getBoundingClientRect();
-          const oldScale = state.scale;
-          const nextScale = Math.max(0.25, Math.min(2.2, state.scale * (event.deltaY > 0 ? 0.9 : 1.1)));
+          const oldScale = state.targetScale || state.scale;
+          const delta = Math.max(-80, Math.min(80, event.deltaY));
+          const nextScale = Math.max(0.32, Math.min(1.9, oldScale * Math.exp(-delta * 0.0012)));
           const px = event.clientX - bounds.left;
           const py = event.clientY - bounds.top;
-          state.panX = px - ((px - state.panX) / oldScale) * nextScale;
-          state.panY = py - ((py - state.panY) / oldScale) * nextScale;
-          state.scale = nextScale;
-          applyTransform();
+          const nextPanX = px - ((px - state.targetPanX) / oldScale) * nextScale;
+          const nextPanY = py - ((py - state.targetPanY) / oldScale) * nextScale;
+          setTransformTarget(nextPanX, nextPanY, nextScale);
         },
         { passive: false },
       );
 
-      window.addEventListener("resize", fitMap);
+      window.addEventListener("resize", () => fitMap(true));
 
       loadMindmap();
     </script>
