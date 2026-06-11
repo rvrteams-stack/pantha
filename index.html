@@ -7,18 +7,19 @@
     <title>Keto Coffee PT Mindmap</title>
     <style>
       :root {
-        --bg: #f2ece0;
-        --panel: #fffdf8;
-        --ink: #171512;
-        --muted: #70675a;
-        --line: rgba(56, 45, 32, 0.15);
-        --coffee: #3a2116;
-        --cream: #fff6e6;
-        --mint: #08755f;
-        --coral: #bf5544;
-        --gold: #b9952f;
-        --blue: #2a628f;
-        --shadow: 0 24px 70px rgba(35, 28, 18, 0.14);
+        --bg: #f5f7fb;
+        --panel: rgba(255, 255, 255, 0.68);
+        --ink: #111827;
+        --muted: #667085;
+        --line: rgba(255, 255, 255, 0.64);
+        --hairline: rgba(17, 24, 39, 0.1);
+        --aqua: #00a6c8;
+        --indigo: #5b6cff;
+        --violet: #8b5cf6;
+        --rose: #f05f7e;
+        --amber: #f59e0b;
+        --green: #10b981;
+        --shadow: 0 28px 90px rgba(15, 23, 42, 0.16);
       }
 
       * {
@@ -29,10 +30,11 @@
         margin: 0;
         min-height: 100vh;
         background:
-          linear-gradient(135deg, rgba(8, 117, 95, 0.12), transparent 34%),
-          linear-gradient(315deg, rgba(191, 85, 68, 0.1), transparent 32%),
-          repeating-linear-gradient(0deg, rgba(58, 33, 22, 0.035) 0 1px, transparent 1px 36px),
-          repeating-linear-gradient(90deg, rgba(58, 33, 22, 0.03) 0 1px, transparent 1px 36px),
+          linear-gradient(124deg, rgba(0, 166, 200, 0.14) 0%, transparent 34%),
+          linear-gradient(236deg, rgba(139, 92, 246, 0.12) 0%, transparent 42%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(236, 242, 255, 0.72)),
+          repeating-linear-gradient(0deg, rgba(17, 24, 39, 0.032) 0 1px, transparent 1px 44px),
+          repeating-linear-gradient(90deg, rgba(17, 24, 39, 0.026) 0 1px, transparent 1px 44px),
           var(--bg);
         color: var(--ink);
         font-family:
@@ -56,12 +58,17 @@
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 20px;
         align-items: center;
-        padding: 18px 22px;
-        border-bottom: 1px solid var(--line);
-        background: rgba(255, 253, 248, 0.86);
-        backdrop-filter: blur(18px);
+        margin: 14px 14px 0;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.46));
+        backdrop-filter: blur(28px) saturate(1.4);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.82),
+          0 18px 60px rgba(15, 23, 42, 0.1);
         position: sticky;
-        top: 0;
+        top: 10px;
         z-index: 5;
       }
 
@@ -70,7 +77,7 @@
       }
 
       .eyebrow {
-        color: var(--mint);
+        color: var(--aqua);
         font-size: 12px;
         font-weight: 800;
         letter-spacing: 0;
@@ -82,6 +89,7 @@
         font-size: clamp(25px, 3.2vw, 42px);
         line-height: 1.05;
         letter-spacing: 0;
+        color: #0b1220;
       }
 
       .meta {
@@ -101,16 +109,18 @@
 
       .text-button {
         min-height: 38px;
-        border: 1px solid var(--line);
-        background: rgba(255, 253, 248, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.76);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.42));
         color: var(--ink);
-        border-radius: 8px;
+        border-radius: 999px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
         cursor: pointer;
-        box-shadow: 0 10px 24px rgba(35, 28, 18, 0.08);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.86),
+          0 12px 26px rgba(15, 23, 42, 0.1);
       }
 
       .text-button {
@@ -120,7 +130,7 @@
       }
 
       .text-button:hover {
-        border-color: rgba(8, 117, 95, 0.34);
+        border-color: rgba(91, 108, 255, 0.34);
         background: #ffffff;
         transform: translateY(-1px);
       }
@@ -129,8 +139,8 @@
         min-height: 0;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-        gap: 16px;
-        padding: 16px;
+        gap: 14px;
+        padding: 14px;
       }
 
       .workspace.source-hidden {
@@ -142,21 +152,48 @@
         min-height: 0;
         background: var(--panel);
         border: 1px solid var(--line);
-        border-radius: 8px;
+        border-radius: 22px;
         box-shadow: var(--shadow);
         overflow: hidden;
       }
 
       .map-shell {
         position: relative;
-        height: calc(100vh - 118px);
+        height: calc(100vh - 124px);
         background:
-          linear-gradient(135deg, rgba(255, 246, 230, 0.82), rgba(255, 253, 248, 0.94)),
-          repeating-linear-gradient(0deg, rgba(23, 21, 18, 0.045) 0 1px, transparent 1px 40px),
-          repeating-linear-gradient(90deg, rgba(23, 21, 18, 0.035) 0 1px, transparent 1px 40px);
+          linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(248, 250, 255, 0.58)),
+          linear-gradient(220deg, rgba(91, 108, 255, 0.09), transparent 48%),
+          linear-gradient(35deg, rgba(0, 166, 200, 0.09), transparent 44%),
+          repeating-linear-gradient(0deg, rgba(17, 24, 39, 0.028) 0 1px, transparent 1px 42px),
+          repeating-linear-gradient(90deg, rgba(17, 24, 39, 0.022) 0 1px, transparent 1px 42px);
+        backdrop-filter: blur(28px) saturate(1.25);
+        isolation: isolate;
+      }
+
+      .map-shell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(115deg, rgba(255, 255, 255, 0.66), transparent 22% 78%, rgba(255, 255, 255, 0.34)),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.54), transparent 42%);
+      }
+
+      .map-shell::after {
+        content: "";
+        position: absolute;
+        inset: 1px;
+        z-index: 0;
+        pointer-events: none;
+        border-radius: 21px;
+        border: 1px solid rgba(255, 255, 255, 0.72);
       }
 
       #mindmap {
+        position: relative;
+        z-index: 1;
         width: 100%;
         height: 100%;
         display: block;
@@ -173,26 +210,31 @@
         left: 16px;
         bottom: 16px;
         max-width: min(420px, calc(100% - 32px));
-        padding: 10px 12px;
-        border-radius: 8px;
-        background: rgba(255, 253, 248, 0.92);
-        border: 1px solid var(--line);
+        z-index: 2;
+        padding: 10px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.72);
         color: var(--muted);
         font-size: 13px;
         line-height: 1.35;
-        box-shadow: 0 12px 30px rgba(32, 29, 24, 0.1);
+        backdrop-filter: blur(18px) saturate(1.3);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.8),
+          0 14px 38px rgba(15, 23, 42, 0.12);
       }
 
       .outline {
-        height: calc(100vh - 118px);
+        height: calc(100vh - 124px);
         display: grid;
         grid-template-rows: auto 1fr;
-        background: rgba(255, 253, 248, 0.94);
+        background: rgba(255, 255, 255, 0.64);
+        backdrop-filter: blur(28px) saturate(1.25);
       }
 
       .outline-header {
         padding: 14px 14px 12px;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 1px solid var(--hairline);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -323,8 +365,8 @@
         toggleSource: document.querySelector("#toggle-source"),
       };
 
-      const palette = ["#08755f", "#bf5544", "#b9952f", "#2a628f", "#7a4f89", "#446f55"];
-      const box = { width: 250, rootWidth: 310, lineHeight: 18, paddingX: 18, paddingY: 13 };
+      const palette = ["#00a6c8", "#5b6cff", "#8b5cf6", "#f05f7e", "#f59e0b", "#10b981"];
+      const box = { width: 292, rootWidth: 340, lineHeight: 19, paddingX: 20, paddingY: 15 };
 
       function getTitle(markdown) {
         const match = markdown.match(/^#\s+(.+)$/m);
@@ -365,8 +407,8 @@
       }
 
       function createNode(text, level, kind = "heading") {
-        const lines = wrapText(text, level <= 1 ? 23 : 30);
-        const minHeight = level <= 1 ? 88 : kind === "bullet" ? 42 : 66;
+        const lines = wrapText(text, level <= 1 ? 20 : 29);
+        const minHeight = level <= 1 ? 96 : kind === "bullet" ? 48 : 74;
         return {
           id: Math.random().toString(36).slice(2),
           text,
@@ -437,7 +479,7 @@
         function place(node, depth) {
           maxDepth = Math.max(maxDepth, depth);
           node.depth = depth;
-          node.x = depth * 330;
+          node.x = depth * 368;
 
           if (!node.children.length) {
             node.y = cursor + node.height / 2;
@@ -456,7 +498,7 @@
         return {
           maxDepth,
           height: Math.max(cursor, 380),
-          width: maxDepth * 330 + box.width + 96,
+          width: maxDepth * 368 + box.width + 104,
         };
       }
 
@@ -476,32 +518,37 @@
         const y = node.y - node.height / 2;
         const isRoot = node.depth === 0;
         const isApproach = node.depth === 1 && node.kind === "heading";
-        const fill = isRoot ? "url(#root-gradient)" : node.kind === "bullet" ? "#fffaf1" : "#fffefa";
-        const stroke = isRoot ? "#2d1810" : color;
-        const textFill = isRoot ? "#fff6e6" : "#171512";
-        const radius = isRoot ? 18 : node.kind === "bullet" ? 8 : 12;
-        const textX = isApproach ? x + 74 : x + box.paddingX;
-        const textY = isRoot ? y + 34 : y + box.paddingY + 14;
+        const fill = isRoot ? "url(#root-liquid)" : "url(#card-glass)";
+        const stroke = isRoot ? "#ffffff" : "#ffffff";
+        const textFill = isRoot ? "#ffffff" : "#111827";
+        const radius = isRoot ? 28 : isApproach ? 22 : 16;
+        const textX = isApproach ? x + 82 : x + box.paddingX;
+        const textY = isRoot ? y + 38 : y + box.paddingY + 15;
         const tspans = node.lines
           .map((line, index) => {
-            const dy = index === 0 ? 0 : isRoot ? 24 : box.lineHeight;
+            const dy = index === 0 ? 0 : isRoot ? 25 : box.lineHeight;
             return `<tspan x="${textX}" dy="${dy}">${escapeHtml(line)}</tspan>`;
           })
           .join("");
         const approachBadge = isApproach
-          ? `<rect x="${x + 16}" y="${y + 18}" width="42" height="26" rx="13" fill="${color}"></rect>
-             <text x="${x + 37}" y="${y + 36}" fill="#ffffff" text-anchor="middle" font-size="12" font-weight="900">${String(node.siblingIndex || 1).padStart(2, "0")}</text>`
+          ? `<rect x="${x + 18}" y="${y + 19}" width="46" height="36" rx="18" fill="${color}" opacity="0.92"></rect>
+             <rect x="${x + 19}" y="${y + 20}" width="44" height="16" rx="8" fill="#ffffff" opacity="0.26"></rect>
+             <text x="${x + 41}" y="${y + 42}" fill="#ffffff" text-anchor="middle" font-size="13" font-weight="900">${String(node.siblingIndex || 1).padStart(2, "0")}</text>`
           : "";
         const accentLine = !isRoot
-          ? `<rect x="${x}" y="${y}" width="6" height="${node.height}" rx="${radius}" fill="${color}"></rect>`
-          : `<path d="M ${x + 20} ${y + node.height - 18} H ${x + node.width - 20}" stroke="#f2c66d" stroke-width="3" stroke-linecap="round" opacity="0.78"></path>`;
+          ? `<rect x="${x + 1}" y="${y + 1}" width="8" height="${node.height - 2}" rx="4" fill="${color}" opacity="0.78"></rect>`
+          : `<path d="M ${x + 24} ${y + node.height - 22} H ${x + node.width - 24}" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" opacity="0.52"></path>`;
+        const shine = `<rect x="${x + 1}" y="${y + 1}" width="${node.width - 2}" height="${Math.min(42, node.height * 0.46)}" rx="${radius - 1}" fill="url(#glass-shine)" opacity="${isRoot ? 0.62 : 0.74}"></rect>`;
+        const outline = `<rect x="${x + 1}" y="${y + 1}" width="${node.width - 2}" height="${node.height - 2}" rx="${radius - 1}" fill="none" stroke="#ffffff" stroke-width="1" opacity="${isRoot ? 0.5 : 0.72}"></rect>`;
 
         return `
           <g class="map-node" transform="translate(0, 0)">
-            <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="${isRoot ? 2 : 1.7}"></rect>
+            <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="${isRoot ? 1.8 : 1.35}" opacity="${isRoot ? 1 : 0.94}"></rect>
+            ${shine}
+            ${outline}
             ${accentLine}
             ${approachBadge}
-            <text x="${textX}" y="${textY}" fill="${textFill}" font-size="${isRoot ? 22 : isApproach ? 15 : 13}" font-weight="${node.kind === "bullet" ? 650 : 900}">${tspans}</text>
+            <text x="${textX}" y="${textY}" fill="${textFill}" font-size="${isRoot ? 26 : isApproach ? 16 : 13}" font-weight="${node.kind === "bullet" ? 650 : 850}">${tspans}</text>
           </g>
         `;
       }
@@ -514,7 +561,11 @@
         const midX = startX + (endX - startX) * 0.46;
         const color = palette[node.depth % palette.length];
 
-        return `<path d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" fill="none" stroke="${color}" stroke-width="${node.depth === 1 ? 4 : 2.2}" opacity="${node.depth === 1 ? 0.82 : 0.62}" stroke-linecap="round"></path>`;
+        const d = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
+        return `
+          <path d="${d}" fill="none" stroke="#ffffff" stroke-width="${node.depth === 1 ? 9 : 6}" opacity="0.62" stroke-linecap="round"></path>
+          <path d="${d}" fill="none" stroke="${color}" stroke-width="${node.depth === 1 ? 3.2 : 2}" opacity="${node.depth === 1 ? 0.72 : 0.56}" stroke-linecap="round"></path>
+        `;
       }
 
       function applyTransform() {
@@ -530,9 +581,9 @@
       }
 
       function animateTransform() {
-        state.panX += (state.targetPanX - state.panX) * 0.16;
-        state.panY += (state.targetPanY - state.panY) * 0.16;
-        state.scale += (state.targetScale - state.scale) * 0.16;
+        state.panX += (state.targetPanX - state.panX) * 0.12;
+        state.panY += (state.targetPanY - state.panY) * 0.12;
+        state.scale += (state.targetScale - state.scale) * 0.12;
         applyTransform();
 
         const settled =
@@ -596,13 +647,25 @@
         state.layout = layout;
         nodes.svg.innerHTML = `
           <defs>
-            <linearGradient id="root-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#5a2c1c"></stop>
-              <stop offset="52%" stop-color="#2d1810"></stop>
-              <stop offset="100%" stop-color="#08755f"></stop>
+            <linearGradient id="root-liquid" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0f172a"></stop>
+              <stop offset="42%" stop-color="#1d2b53"></stop>
+              <stop offset="72%" stop-color="#3154ff"></stop>
+              <stop offset="100%" stop-color="#00a6c8"></stop>
+            </linearGradient>
+            <linearGradient id="card-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92"></stop>
+              <stop offset="45%" stop-color="#f8fbff" stop-opacity="0.74"></stop>
+              <stop offset="100%" stop-color="#eaf1ff" stop-opacity="0.58"></stop>
+            </linearGradient>
+            <linearGradient id="glass-shine" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.94"></stop>
+              <stop offset="48%" stop-color="#ffffff" stop-opacity="0.24"></stop>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
             </linearGradient>
             <filter id="node-shadow" x="-20%" y="-30%" width="140%" height="160%">
-              <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#231c12" flood-opacity="0.16"></feDropShadow>
+              <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.16"></feDropShadow>
+              <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#ffffff" flood-opacity="0.36"></feDropShadow>
             </filter>
           </defs>
           <g id="map-content">
@@ -691,8 +754,8 @@
           event.preventDefault();
           const bounds = nodes.svg.getBoundingClientRect();
           const oldScale = state.targetScale || state.scale;
-          const delta = Math.max(-80, Math.min(80, event.deltaY));
-          const nextScale = Math.max(0.32, Math.min(1.9, oldScale * Math.exp(-delta * 0.0012)));
+          const delta = Math.max(-56, Math.min(56, event.deltaY));
+          const nextScale = Math.max(0.32, Math.min(1.9, oldScale * Math.exp(-delta * 0.0008)));
           const px = event.clientX - bounds.left;
           const py = event.clientY - bounds.top;
           const nextPanX = px - ((px - state.targetPanX) / oldScale) * nextScale;
