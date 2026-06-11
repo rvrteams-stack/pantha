@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Keto Coffee PT Mindmap</title>
+    <style>
+      :root {
+        --bg: #f6f3ed;
+        --panel: #ffffff;
+        --ink: #201d18;
+        --muted: #6f675d;
+        --line: #ded7cb;
+        --accent: #19715f;
+        --accent-2: #b34535;
+        --shadow: 0 18px 50px rgba(32, 29, 24, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      button,
+      a {
+        font: inherit;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(18px);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .title-block {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 2px 0 0;
+        font-size: clamp(22px, 3vw, 34px);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .meta {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .text-button {
+        min-height: 38px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        box-shadow: 0 8px 22px rgba(32, 29, 24, 0.06);
+      }
+
+      .text-button {
+        padding: 0 12px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .text-button:hover {
+        border-color: #c9bdae;
+        transform: translateY(-1px);
+      }
+
+      .workspace {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 16px;
+        padding: 16px;
+      }
+
+      .map-shell,
+      .outline {
+        min-height: 0;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .map-shell {
+        position: relative;
+        height: calc(100vh - 118px);
+      }
+
+      #mindmap {
+        width: 100%;
+        height: 100%;
+        display: block;
+        cursor: grab;
+        touch-action: none;
+      }
+
+      #mindmap:active {
+        cursor: grabbing;
+      }
+
+      .status {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        max-width: min(420px, calc(100% - 32px));
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+        box-shadow: 0 12px 30px rgba(32, 29, 24, 0.1);
+      }
+
+      .outline {
+        height: calc(100vh - 118px);
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .outline-header {
+        padding: 14px 14px 12px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .outline-header strong {
+        font-size: 14px;
+      }
+
+      .outline-header span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      pre {
+        margin: 0;
+        padding: 14px;
+        overflow: auto;
+        color: #2e2a24;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 980px) {
+        .topbar {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          justify-content: flex-start;
+        }
+
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .map-shell {
+          height: min(70vh, 680px);
+        }
+
+        .outline {
+          height: 44vh;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .topbar {
+          padding: 14px;
+        }
+
+        .workspace {
+          padding: 10px;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="title-block">
+          <div class="eyebrow">Shared mindmap</div>
+          <h1 id="page-title">Keto Coffee PT</h1>
+          <div class="meta" id="page-meta">Loading outline...</div>
+        </div>
+        <nav class="toolbar" aria-label="Mindmap actions">
+          <button class="text-button" id="fit-button" title="Fit map" type="button">Fit</button>
+          <button class="text-button" id="reload-button" title="Reload outline" type="button">Reload</button>
+          <button class="text-button" id="toggle-source" type="button">
+            <span>Outline</span>
+          </button>
+          <a class="text-button" href="./mindmap.md">
+            <span>Markdown</span>
+          </a>
+        </nav>
+      </header>
+
+      <main class="workspace">
+        <section class="map-shell" aria-label="Interactive mindmap">
+          <svg id="mindmap"></svg>
+          <div class="status" id="status">Loading mindmap.md...</div>
+        </section>
+
+        <aside class="outline" id="outline-panel" aria-label="Markdown outline">
+          <div class="outline-header">
+            <strong>Source outline</strong>
+            <span>Edited in mindmap.md</span>
+          </div>
+          <pre id="outline-source">Loading...</pre>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      const state = {
+        tree: null,
+        layout: null,
+        markdown: "",
+        scale: 1,
+        panX: 0,
+        panY: 0,
+        dragging: false,
+        dragStart: null,
+      };
+
+      const nodes = {
+        title: document.querySelector("#page-title"),
+        meta: document.querySelector("#page-meta"),
+        status: document.querySelector("#status"),
+        source: document.querySelector("#outline-source"),
+        svg: document.querySelector("#mindmap"),
+        outline: document.querySelector("#outline-panel"),
+        fit: document.querySelector("#fit-button"),
+        reload: document.querySelector("#reload-button"),
+        toggleSource: document.querySelector("#toggle-source"),
+      };
+
+      const palette = ["#19715f", "#b34535", "#6b5e2d", "#315f89", "#8b4f73", "#3f7350"];
+      const box = { width: 220, rootWidth: 260, lineHeight: 17, paddingX: 14, paddingY: 10 };
+
+      function getTitle(markdown) {
+        const match = markdown.match(/^#\s+(.+)$/m);
+        return match ? match[1].trim() : "Keto Coffee PT";
+      }
+
+      function getUpdated(markdown) {
+        const match = markdown.match(/<!--\s*updated:\s*([^>]+?)\s*-->/i);
+        return match ? match[1].trim() : "Draft";
+      }
+
+      function escapeHtml(value) {
+        return value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
+      }
+
+      function wrapText(text, maxChars) {
+        const words = text.split(/\s+/).filter(Boolean);
+        const lines = [];
+        let current = "";
+
+        for (const word of words) {
+          if (!current) {
+            current = word;
+          } else if (`${current} ${word}`.length <= maxChars) {
+            current = `${current} ${word}`;
+          } else {
+            lines.push(current);
+            current = word;
+          }
+        }
+
+        if (current) lines.push(current);
+        return lines.length ? lines : [text];
+      }
+
+      function createNode(text, level, kind = "heading") {
+        const lines = wrapText(text, level <= 1 ? 28 : 32);
+        return {
+          id: Math.random().toString(36).slice(2),
+          text,
+          level,
+          kind,
+          children: [],
+          lines,
+          width: level <= 1 ? box.rootWidth : box.width,
+          height: Math.max(42, lines.length * box.lineHeight + box.paddingY * 2),
+          x: 0,
+          y: 0,
+        };
+      }
+
+      function parseMarkdown(markdown) {
+        const root = createNode(getTitle(markdown), 1);
+        const stack = [root];
+
+        for (const rawLine of markdown.split("\n")) {
+          const line = rawLine.replace(/\s+$/, "");
+          if (!line.trim() || line.trim().startsWith("<!--")) continue;
+
+          const heading = line.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) {
+            const level = heading[1].length;
+            const text = heading[2].trim();
+            if (level === 1) {
+              root.text = text;
+              root.lines = wrapText(text, 28);
+              continue;
+            }
+
+            const node = createNode(text, level, "heading");
+            while (stack.length && stack[stack.length - 1].level >= level) stack.pop();
+            const parent = stack[stack.length - 1] || root;
+            parent.children.push(node);
+            stack.push(node);
+            continue;
+          }
+
+          const bullet = line.match(/^(\s*)[-*]\s+(.+)$/);
+          if (bullet) {
+            const indent = Math.floor(bullet[1].replaceAll("\t", "  ").length / 2);
+            const parentHeading = stack[stack.length - 1] || root;
+            const level = parentHeading.level + indent + 1;
+            const node = createNode(bullet[2].trim(), level, "bullet");
+
+            while (stack.length && stack[stack.length - 1].level >= level) stack.pop();
+            const parent = stack[stack.length - 1] || root;
+            parent.children.push(node);
+            stack.push(node);
+          }
+        }
+
+        return root;
+      }
+
+      function measureTree(root) {
+        let maxDepth = 1;
+        let cursor = 0;
+
+        function place(node, depth) {
+          maxDepth = Math.max(maxDepth, depth);
+          node.depth = depth;
+          node.x = depth * 280;
+
+          if (!node.children.length) {
+            node.y = cursor + node.height / 2;
+            cursor += node.height + 18;
+            return;
+          }
+
+          node.children.forEach((child) => place(child, depth + 1));
+          const first = node.children[0];
+          const last = node.children[node.children.length - 1];
+          node.y = (first.y + last.y) / 2;
+        }
+
+        place(root, 0);
+
+        return {
+          maxDepth,
+          height: Math.max(cursor, 360),
+          width: maxDepth * 280 + box.width + 80,
+        };
+      }
+
+      function flattenTree(root) {
+        const list = [];
+        function walk(node, parent = null) {
+          list.push({ node, parent });
+          node.children.forEach((child) => walk(child, node));
+        }
+        walk(root);
+        return list;
+      }
+
+      function nodeMarkup(node) {
+        const color = palette[node.depth % palette.length];
+        const fill = node.depth === 0 ? "#201d18" : "#ffffff";
+        const stroke = node.depth === 0 ? "#201d18" : color;
+        const textFill = node.depth === 0 ? "#ffffff" : "#201d18";
+        const x = node.x;
+        const y = node.y - node.height / 2;
+        const radius = node.kind === "bullet" ? 6 : 8;
+        const tspans = node.lines
+          .map((line, index) => {
+            const dy = index === 0 ? 0 : box.lineHeight;
+            return `<tspan x="${x + box.paddingX}" dy="${dy}">${escapeHtml(line)}</tspan>`;
+          })
+          .join("");
+
+        return `
+          <g class="map-node" transform="translate(0, 0)">
+            <rect x="${x}" y="${y}" width="${node.width}" height="${node.height}" rx="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="1.6"></rect>
+            <text x="${x + box.paddingX}" y="${y + box.paddingY + 13}" fill="${textFill}" font-size="${node.depth === 0 ? 15 : 13}" font-weight="${node.kind === "bullet" ? 600 : 800}">${tspans}</text>
+          </g>
+        `;
+      }
+
+      function linkMarkup(parent, node) {
+        const startX = parent.x + parent.width;
+        const startY = parent.y;
+        const endX = node.x;
+        const endY = node.y;
+        const midX = startX + (endX - startX) * 0.52;
+        const color = palette[node.depth % palette.length];
+
+        return `<path d="M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}" fill="none" stroke="${color}" stroke-width="1.8" opacity="0.72"></path>`;
+      }
+
+      function applyTransform() {
+        const group = nodes.svg.querySelector("#map-content");
+        if (!group) return;
+        group.setAttribute("transform", `translate(${state.panX} ${state.panY}) scale(${state.scale})`);
+      }
+
+      function fitMap() {
+        if (!state.layout) return;
+        const bounds = nodes.svg.getBoundingClientRect();
+        const scaleX = (bounds.width - 56) / state.layout.width;
+        const scaleY = (bounds.height - 56) / state.layout.height;
+        state.scale = Math.max(0.32, Math.min(1.25, Math.min(scaleX, scaleY)));
+        state.panX = 28;
+        state.panY = Math.max(28, (bounds.height - state.layout.height * state.scale) / 2);
+        applyTransform();
+      }
+
+      function renderMindmap(markdown) {
+        const tree = parseMarkdown(markdown);
+        const layout = measureTree(tree);
+        const items = flattenTree(tree);
+        const links = items
+          .filter((item) => item.parent)
+          .map((item) => linkMarkup(item.parent, item.node))
+          .join("");
+        const nodeHtml = items.map((item) => nodeMarkup(item.node)).join("");
+
+        state.tree = tree;
+        state.layout = layout;
+        nodes.svg.innerHTML = `
+          <defs>
+            <filter id="node-shadow" x="-20%" y="-30%" width="140%" height="160%">
+              <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#201d18" flood-opacity="0.10"></feDropShadow>
+            </filter>
+          </defs>
+          <g id="map-content">
+            <g class="links">${links}</g>
+            <g class="nodes" filter="url(#node-shadow)">${nodeHtml}</g>
+          </g>
+        `;
+        fitMap();
+      }
+
+      async function loadMindmap() {
+        nodes.status.textContent = "Loading mindmap.md...";
+
+        try {
+          const response = await fetch(`./mindmap.md?ts=${Date.now()}`, {
+            cache: "no-store",
+          });
+
+          if (!response.ok) {
+            throw new Error(`mindmap.md returned ${response.status}`);
+          }
+
+          const markdown = await response.text();
+          state.markdown = markdown;
+          nodes.title.textContent = getTitle(markdown);
+          nodes.meta.textContent = `Updated: ${getUpdated(markdown)}. Share this page with the team; edit mindmap.md to update the map.`;
+          nodes.source.textContent = markdown;
+          renderMindmap(markdown);
+          nodes.status.textContent = "Map loaded. Drag to pan, scroll to zoom, use Fit to recenter.";
+        } catch (error) {
+          nodes.meta.textContent = "Could not load the source outline.";
+          nodes.source.textContent = String(error);
+          nodes.svg.innerHTML = "";
+          nodes.status.textContent = "Could not load mindmap.md. Check that the file is published next to index.html.";
+        }
+      }
+
+      nodes.fit.addEventListener("click", () => {
+        fitMap();
+      });
+
+      nodes.reload.addEventListener("click", loadMindmap);
+
+      nodes.toggleSource.addEventListener("click", () => {
+        nodes.outline.classList.toggle("hidden");
+        window.setTimeout(fitMap, 80);
+      });
+
+      nodes.svg.addEventListener("pointerdown", (event) => {
+        state.dragging = true;
+        state.dragStart = {
+          x: event.clientX,
+          y: event.clientY,
+          panX: state.panX,
+          panY: state.panY,
+        };
+        nodes.svg.setPointerCapture(event.pointerId);
+      });
+
+      nodes.svg.addEventListener("pointermove", (event) => {
+        if (!state.dragging || !state.dragStart) return;
+        state.panX = state.dragStart.panX + event.clientX - state.dragStart.x;
+        state.panY = state.dragStart.panY + event.clientY - state.dragStart.y;
+        applyTransform();
+      });
+
+      nodes.svg.addEventListener("pointerup", (event) => {
+        state.dragging = false;
+        state.dragStart = null;
+        nodes.svg.releasePointerCapture(event.pointerId);
+      });
+
+      nodes.svg.addEventListener(
+        "wheel",
+        (event) => {
+          event.preventDefault();
+          const bounds = nodes.svg.getBoundingClientRect();
+          const oldScale = state.scale;
+          const nextScale = Math.max(0.25, Math.min(2.2, state.scale * (event.deltaY > 0 ? 0.9 : 1.1)));
+          const px = event.clientX - bounds.left;
+          const py = event.clientY - bounds.top;
+          state.panX = px - ((px - state.panX) / oldScale) * nextScale;
+          state.panY = py - ((py - state.panY) / oldScale) * nextScale;
+          state.scale = nextScale;
+          applyTransform();
+        },
+        { passive: false },
+      );
+
+      window.addEventListener("resize", fitMap);
+
+      loadMindmap();
+    </script>
+  </body>
+</html>
