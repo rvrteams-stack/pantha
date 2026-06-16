@@ -554,37 +554,65 @@
         const leftCount = Math.ceil(directChildren.length / 2);
         const left = directChildren.slice(0, leftCount);
         const right = directChildren.slice(leftCount);
-        const branchGap = 205;
+        const branchGap = 70;
         const branchOffset = 405;
         const childOffset = 285;
-        const childGap = 92;
+        const childGap = 28;
 
-        function yFor(index, count) {
-          return (index - (count - 1) / 2) * branchGap;
+        function calculateSpan(node) {
+          if (!node.children.length) {
+            node.subtreeHeight = node.height;
+            return node.subtreeHeight;
+          }
+
+          const childrenHeight =
+            node.children.reduce((total, child) => total + calculateSpan(child), 0) +
+            childGap * Math.max(0, node.children.length - 1);
+          node.subtreeHeight = Math.max(node.height, childrenHeight);
+          return node.subtreeHeight;
         }
 
-        function placeDescendants(node, side, depth) {
+        function sideHeight(children) {
+          if (!children.length) return 0;
+          return (
+            children.reduce((total, child) => total + child.subtreeHeight, 0) +
+            branchGap * Math.max(0, children.length - 1)
+          );
+        }
+
+        function placeDescendants(node, side, depth, cx, cy) {
           node.depth = depth;
           node.side = side;
+          node.cx = cx;
+          node.cy = cy;
 
-          node.children.forEach((child, index) => {
-            child.cx = node.cx + side * childOffset;
-            child.cy = node.cy + (index - (node.children.length - 1) / 2) * childGap;
-            placeDescendants(child, side, depth + 1);
+          const totalChildrenHeight =
+            node.children.reduce((total, child) => total + child.subtreeHeight, 0) +
+            childGap * Math.max(0, node.children.length - 1);
+          let cursor = node.cy - totalChildrenHeight / 2;
+
+          node.children.forEach((child) => {
+            const childCy = cursor + child.subtreeHeight / 2;
+            placeDescendants(child, side, depth + 1, node.cx + side * childOffset, childCy);
+            cursor += child.subtreeHeight + childGap;
           });
         }
 
-        left.forEach((child, index) => {
-          child.cx = -branchOffset;
-          child.cy = yFor(index, left.length);
-          placeDescendants(child, -1, 1);
-        });
+        directChildren.forEach(calculateSpan);
 
-        right.forEach((child, index) => {
-          child.cx = branchOffset;
-          child.cy = yFor(index, right.length);
-          placeDescendants(child, 1, 1);
-        });
+        function placeSide(children, side) {
+          const totalHeight = sideHeight(children);
+          let cursor = -totalHeight / 2;
+
+          children.forEach((child) => {
+            const childCy = cursor + child.subtreeHeight / 2;
+            placeDescendants(child, side, 1, side * branchOffset, childCy);
+            cursor += child.subtreeHeight + branchGap;
+          });
+        }
+
+        placeSide(left, -1);
+        placeSide(right, 1);
 
         flattenTree(root).forEach(({ node }) => {
           node.x = node.cx - node.width / 2;
@@ -731,8 +759,14 @@
         const scaleX = (bounds.width - 56) / state.layout.width;
         const scaleY = (bounds.height - 56) / state.layout.height;
         const nextScale = Math.max(0.38, Math.min(1.34, Math.min(scaleX, scaleY)));
-        const nextPanX = Math.max(32, (bounds.width - state.layout.width * nextScale) / 2);
-        const nextPanY = Math.max(32, (bounds.height - state.layout.height * nextScale) / 2);
+        const scaledWidth = state.layout.width * nextScale;
+        const scaledHeight = state.layout.height * nextScale;
+        const centerPan = (viewportSize, contentSize) => {
+          const centered = (viewportSize - contentSize) / 2;
+          return contentSize > viewportSize ? centered : Math.max(32, centered);
+        };
+        const nextPanX = centerPan(bounds.width, scaledWidth);
+        const nextPanY = centerPan(bounds.height, scaledHeight);
         setTransformTarget(nextPanX, nextPanY, nextScale, immediate);
       }
 
