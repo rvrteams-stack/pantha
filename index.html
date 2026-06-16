@@ -101,6 +101,17 @@
         justify-content: flex-end;
       }
 
+      .map-tabs {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.28);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
+      }
+
       .text-button {
         min-height: 34px;
         border: 1px solid rgba(255, 255, 255, 0.7);
@@ -128,6 +139,14 @@
         border-color: rgba(255, 255, 255, 0.92);
         background: rgba(255, 255, 255, 0.72);
         transform: translateY(-1px);
+      }
+
+      .map-tab.is-active {
+        background: rgba(255, 255, 255, 0.78);
+        border-color: rgba(255, 255, 255, 0.92);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          0 10px 22px rgba(61, 91, 145, 0.12);
       }
 
       .workspace {
@@ -309,15 +328,16 @@
           <div class="meta" id="page-meta">Loading outline...</div>
         </div>
         <nav class="toolbar" aria-label="Mindmap actions">
+          <div class="map-tabs" id="map-tabs" aria-label="Mindmap tabs"></div>
           <button class="text-button" id="fit-button" title="Fit map" type="button">Center</button>
           <button class="text-button" id="reload-button" title="Reload outline" type="button">Reload</button>
           <button class="text-button" id="toggle-source" type="button">
             <span>Source</span>
           </button>
-          <a class="text-button" href="https://github.com/rvrteams-stack/pantha/edit/main/mindmap.md" target="_blank" rel="noopener">
+          <a class="text-button" id="edit-link" href="https://github.com/rvrteams-stack/pantha/edit/main/mindmap.md" target="_blank" rel="noopener">
             <span>Edit</span>
           </a>
-          <a class="text-button" href="./mindmap.md">
+          <a class="text-button" id="markdown-link" href="./mindmap.md">
             <span>Markdown</span>
           </a>
         </nav>
@@ -332,7 +352,7 @@
         <aside class="outline hidden" id="outline-panel" aria-label="Markdown outline">
           <div class="outline-header">
             <strong>Source outline</strong>
-            <span>Edited in mindmap.md</span>
+            <span id="source-file-label">Edited in mindmap.md</span>
           </div>
           <pre id="outline-source">Loading...</pre>
         </aside>
@@ -353,6 +373,7 @@
         transformFrame: null,
         dragging: false,
         dragStart: null,
+        currentMap: null,
       };
 
       const nodes = {
@@ -363,10 +384,31 @@
         svg: document.querySelector("#mindmap"),
         outline: document.querySelector("#outline-panel"),
         workspace: document.querySelector(".workspace"),
+        mapTabs: document.querySelector("#map-tabs"),
+        editLink: document.querySelector("#edit-link"),
+        markdownLink: document.querySelector("#markdown-link"),
+        sourceFileLabel: document.querySelector("#source-file-label"),
         fit: document.querySelector("#fit-button"),
         reload: document.querySelector("#reload-button"),
         toggleSource: document.querySelector("#toggle-source"),
       };
+
+      const maps = [
+        {
+          id: "keto",
+          label: "Keto Coffee PT",
+          file: "mindmap.md",
+          editUrl: "https://github.com/rvrteams-stack/pantha/edit/main/mindmap.md",
+        },
+        {
+          id: "fitforma",
+          label: "FitForma",
+          file: "fitforma.md",
+          editUrl: "https://github.com/rvrteams-stack/pantha/edit/main/fitforma.md",
+        },
+      ];
+
+      state.currentMap = maps[0];
 
       const palette = ["#dfeaff", "#e8e7ff", "#dceaff", "#efe6ff", "#e3efff", "#f3e9ff"];
       const box = {
@@ -386,6 +428,23 @@
       function getUpdated(markdown) {
         const match = markdown.match(/<!--\s*updated:\s*([^>]+?)\s*-->/i);
         return match ? match[1].trim() : "Draft";
+      }
+
+      function renderTabs() {
+        nodes.mapTabs.innerHTML = maps
+          .map((map) => {
+            const activeClass = map.id === state.currentMap.id ? " is-active" : "";
+            return `<button class="text-button map-tab${activeClass}" type="button" data-map-id="${map.id}">${escapeHtml(map.label)}</button>`;
+          })
+          .join("");
+      }
+
+      function setCurrentMap(mapId) {
+        const nextMap = maps.find((map) => map.id === mapId);
+        if (!nextMap || nextMap.id === state.currentMap.id) return;
+        state.currentMap = nextMap;
+        renderTabs();
+        loadMindmap();
       }
 
       function escapeHtml(value) {
@@ -724,21 +783,26 @@
       }
 
       async function loadMindmap() {
-        nodes.status.textContent = "Loading mindmap.md...";
+        const activeMap = state.currentMap;
+        nodes.status.textContent = `Loading ${activeMap.label}...`;
+        nodes.editLink.href = activeMap.editUrl;
+        nodes.markdownLink.href = `./${activeMap.file}`;
+        nodes.sourceFileLabel.textContent = `Edited in ${activeMap.file}`;
 
         try {
-          const response = await fetch(`./mindmap.md?ts=${Date.now()}`, {
+          const response = await fetch(`./${activeMap.file}?ts=${Date.now()}`, {
             cache: "no-store",
           });
 
           if (!response.ok) {
-            throw new Error(`mindmap.md returned ${response.status}`);
+            throw new Error(`${activeMap.file} returned ${response.status}`);
           }
 
           const markdown = await response.text();
+          if (activeMap.id !== state.currentMap.id) return;
           state.markdown = markdown;
           nodes.title.textContent = getTitle(markdown);
-          nodes.meta.textContent = `Updated: ${getUpdated(markdown)}. Approach branches are ready for the next content pass.`;
+          nodes.meta.textContent = `Updated: ${getUpdated(markdown)}. ${activeMap.label} branches are ready for the next content pass.`;
           nodes.source.textContent = markdown;
           renderMindmap(markdown);
           nodes.status.textContent = "Drag to move. Scroll gently to zoom. Center brings the map back.";
@@ -746,7 +810,7 @@
           nodes.meta.textContent = "Could not load the source outline.";
           nodes.source.textContent = String(error);
           nodes.svg.innerHTML = "";
-          nodes.status.textContent = "Could not load mindmap.md. Check that the file is published next to index.html.";
+          nodes.status.textContent = `Could not load ${activeMap.file}. Check that it is published next to index.html.`;
         }
       }
 
@@ -755,6 +819,12 @@
       });
 
       nodes.reload.addEventListener("click", loadMindmap);
+
+      nodes.mapTabs.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-map-id]");
+        if (!button) return;
+        setCurrentMap(button.dataset.mapId);
+      });
 
       nodes.toggleSource.addEventListener("click", () => {
         nodes.outline.classList.toggle("hidden");
@@ -814,6 +884,7 @@
 
       window.addEventListener("resize", () => fitMap(true));
 
+      renderTabs();
       loadMindmap();
     </script>
   </body>
